@@ -1,0 +1,4 @@
+<launch>
+    <!-- 虚拟底盘控制器节点 -->
+    <node name="virtually_odom" pkg="odc_ap" type="virtually_odom.py" args="" required="true" output="screen" />
+</launch>

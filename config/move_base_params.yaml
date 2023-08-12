@@ -1,0 +1,75 @@
+# move_base配置文件示例
+
+# 机器人底盘配置
+base_global_planner: "navfn/NavfnROS" # 全局规划器，通常使用navfn或global_planner
+base_local_planner: "base_local_planner/TrajectoryPlannerROS" # 局部规划器，通常使用TrajectoryPlannerROS或dwa_local_planner
+controller_frequency: 5.0 # 控制频率，单位为Hz
+
+# 全局规划器参数
+NavfnROS:
+  allow_unknown: false # 是否允许路径穿过未知区域
+  planner_window_x: 100.0 # X方向规划窗口大小，单位为m
+  planner_window_y: 100.0 # Y方向规划窗口大小，单位为m
+  default_tolerance: 0.5 # 默认规划容差，单位为m
+
+# 局部规划器参数
+base_local_planner_params:
+  TrajectoryPlannerROS:
+    max_vel_x: 0.5 # X方向最大速度，单位为m/s
+    min_vel_x: 0.1 # X方向最小速度，单位为m/s
+    max_vel_theta: 1.0 # 最大角速度，单位为rad/s
+    min_vel_theta: -1.0 # 最小角速度，单位为rad/s
+    acc_lim_x: 0.5 # X方向加速度限制，单位为m/s^2
+    acc_lim_theta: 1.0 # 角加速度限制，单位为rad/s^2
+    sim_time: 1.0 # 仿真时间，单位为s
+    sim_granularity: 0.025 # 仿真粒度，单位为m
+    vx_samples: 6 # X方向速度采样点数量
+    vtheta_samples: 20 # 角速度采样点数量
+    holonomic_robot: false # 是否为全向机器人
+
+# costmap配置
+footprint: [[0.25, 0.25], [0.25, -0.25], [-0.25, -0.25], [-0.25, 0.25]] # 机器人轮廓
+footprint_padding: 0.01 # 轮廓填充值，用于代表机器人尺寸
+inflation_radius: 0.5 # 膨胀半径，用于避免机器人碰撞
+obstacle_range: 2.5 # 障碍物探测范围，单位为m
+raytrace_range: 3.0 # 光线追踪范围，单位为m
+
+# 全局代价地图参数
+global_costmap_params:
+  global_frame: "odom" # 全局代价地图使用的坐标系
+  robot_base_frame: "base_footprint" # 机器人底盘的坐标系
+  update_frequency: 1.0 # 更新频率，单位为Hz
+  publish_frequency: 0.5 # 发布频率，单位为Hz
+  static_map: true # 是否使用静态地图
+  rolling_window: false # 是否滚动窗口，如果为false，则地图会随机器人移动
+  resolution: 0.05 # 地图分辨率，单位为m/cell
+  width: 40 # 地图宽度，单位为cells
+  height: 40 # 地图高度，单位为cells
+  origin_x: -2.0 # 地图原点X坐标，单位为m
+  origin_y: -2.0 # 地图原点Y坐标，单位为m
+
+# 局部代价地图参数
+local_costmap_params:
+  global_frame: "odom" # 局部代价地图使用的坐标系，通常使用odom或base_footprint
+  robot_base_frame: "base_footprint" # 机器人底盘的坐标系
+  update_frequency: 5.0 # 更新频率，单位为Hz
+  publish_frequency: 2.0 # 发布频率，单位为Hz
+  static_map: false # 是否使用静态地图
+  rolling_window: true # 是否滚动窗口，局部地图会随机器人移动
+  resolution: 0.025 # 地图分辨率，单位为m/cell
+  width: 10 # 地图宽度，单位为cells
+  height: 10 # 地图高度，单位为cells
+  origin_x: -1.25 # 地图原点X坐标，单位为m
+  origin_y: -1.25 # 地图原点Y坐标，单位为m
+
+# 全局和局部代价地图插件
+costmap_plugins:
+  - { name: obstacles, type: "costmap_2d::ObstacleLayer" }
+  - { name: inflation, type: "costmap_2d::InflationLayer" }
+
+# 全局规划器参数
+GlobalPlanner:
+  allow_unknown: true # 是否允许路径穿过未知区域
+  planner_window_x: 100.0 # X方向规划窗口大小，单位为m
+  planner_window_y: 100.0 # Y方向规划窗口大小，单位为m
+  default_tolerance: 0.5 # 默认规划容差，单位为m

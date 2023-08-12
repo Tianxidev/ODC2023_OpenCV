@@ -1,0 +1,4 @@
+<?xml version="1.0"?>
+<launch>
+    <node name="odc_ap_socket" pkg="odc_ap" type="socket_server.py" args="" required="true" output="screen" />
+</launch>

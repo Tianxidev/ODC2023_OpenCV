@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<launch>
+
+    <!-- 地图坐标转换参数 -->
+    <arg name="tf_par" default="0 0 0 0 0 0 map odom 100" />
+
+    <!-- 地图文件 -->
+    <arg name="map_file" default="$(find odc_ap)/maps/map.yaml" />
+
+    <!-- 地图服务器节点 -->
+    <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)">
+        <param name="frame_id" value="map" />
+    </node>
+
+    <!-- 地图转换节点 -->
+    <node pkg="tf" type="static_transform_publisher" name="map_to_odom" args="$(arg tf_par)"
+        output="screen" />
+
+</launch>
